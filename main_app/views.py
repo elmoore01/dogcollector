@@ -1,11 +1,34 @@
+# import uuid
+# import boto3
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Dog
+from django.views.generic import ListView, DetailView
+# from django.contrib.auth import login
+# from django.contrib.auth.forms import UserCreationForm
+# from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Dog, Toy
 from .forms import FeedingForm
+
+# S3_BASE_URL = 'https://s3.us-west-1.amazonaws.com/'
+# BUCKET = 'catcollector-sei-9-elm'
 
 # Create your views here.
 
 from django.http import HttpResponse
+
+class DogCreate(CreateView):
+    model = Dog
+    fields = ['name', 'breed', 'description', 'age']
+    success_url = '/dogs/'
+
+class DogUpdate(UpdateView):
+    model = Dog
+    fields = ['breed', 'description', 'age']
+
+class DogDelete(DeleteView):
+    model = Dog
+    success_url = '/dogs/'
 
 def home(request):
     return HttpResponse('<h1>Dog Collector</h1>')
@@ -35,15 +58,30 @@ def add_feeding(request, dog_id):
         new_feeding.save()
     return redirect('detail', dog_id=dog_id)
 
-class DogCreate(CreateView):
-    model = Dog
-    fields = '__all__'
-    success_url = '/dogs/'
+    # @login_required
+def assoc_toy(request, cat_id, toy_id):
+  Cat.objects.get(id=cat_id).toys.add(toy_id)
+  return redirect('detail', cat_id=cat_id)
 
-class DogUpdate(UpdateView):
-    model = Dog
-    fields = ['breed', 'description', 'age']
+# @login_required
+def unassoc_toy(request, cat_id, toy_id):
+  Cat.objects.get(id=cat_id).toys.remove(toy_id)
+  return redirect('detail', cat_id=cat_id)
 
-class DogDelete(DeleteView):
-    model = Dog
-    success_url = '/dogs/'
+class ToyList(ListView):
+  model = Toy
+
+class ToyDetail(DetailView):
+  model = Toy
+
+class ToyCreate(CreateView):
+  model = Toy
+  fields = '__all__'
+
+class ToyUpdate(UpdateView):
+  model = Toy
+  fields = ['name', 'color']
+
+class ToyDelete(DeleteView):
+  model = Toy
+  success_url = '/toys/'

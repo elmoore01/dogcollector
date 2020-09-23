@@ -28,6 +28,9 @@ class Dog(models.Model):
     age = models.IntegerField()
     toys = models.ManyToManyField(Toy)
 
+    def __str__(self):
+        return self.name
+    
     def fed_for_today(self):
         return self.feeding_set.filter(date=date.today()).count() >= len(MEALS)
 
