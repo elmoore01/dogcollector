@@ -40,6 +40,7 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+@login_required
 def dogs_index(request):
     dogs = Dog.objects.filter(user=request.user)
     return render(request, 'dogs/index.html', { 'dogs' : dogs })
