@@ -9,13 +9,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Dog, Toy, Photo
 from .forms import FeedingForm
+from django.http import HttpResponse
 
 S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
 BUCKET = 'catcollector-sei-9-elm'
-
-# Create your views here.
-
-from django.http import HttpResponse
 
 class DogCreate(LoginRequiredMixin, CreateView):
     model = Dog
