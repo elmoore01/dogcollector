@@ -120,5 +120,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-import django_heroku
-django_heroku.settings(locals())
+# Add this variable to specify where a successful login should go
+LOGIN_REDIRECT_URL = '/dogs/'
+
+LOGOUT_REDIRECT_URL = '/'
